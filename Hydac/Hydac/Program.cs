@@ -5,6 +5,9 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
+
+            MeetingRoom mr = new MeetingRoom();
+            mr.BookRoom();
         }
     }
 }
