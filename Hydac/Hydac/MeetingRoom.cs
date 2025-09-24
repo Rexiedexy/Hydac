@@ -8,5 +8,16 @@ namespace Hydac
 {
     public class MeetingRoom
     {
+        private string rooms;
+        private int size;
+        private string time;
+        
+
+        private int[] room = new int[5];
+        public void BookRoom()
+        {
+            Console.WriteLine("");
+        }
+
     }
 }
