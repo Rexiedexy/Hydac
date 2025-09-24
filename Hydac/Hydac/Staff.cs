@@ -8,5 +8,7 @@ namespace Hydac
 {
     public class Staff
     {
+        private List<string> staffMembers = new List<string>();
+        
     }
 }
