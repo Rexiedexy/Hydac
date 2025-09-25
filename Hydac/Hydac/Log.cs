@@ -11,7 +11,7 @@ namespace Hydac
         private List<string> logs = new List<string>();
         public void Log(string message) => logs.Add($"{DateTime.Now}: {message}"); // tilføj muligvis user id/ navn senere
 
-        public void ShowLogs(string message)
+        public void ShowLogs()
         {
             if(logs.Count == 0)
             {

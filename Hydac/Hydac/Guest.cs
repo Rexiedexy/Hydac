@@ -8,28 +8,50 @@ namespace Hydac
 {
     public class Guest
     {
-        private List<string> guestList = new List<string>();
-        public void AddGuest(string name) => guestList.Add(name);
+        public string GuestId { get; set; }
+        public string Name { get; set; }
+        public string Firmanavn { get; set; }
+        public bool IsCheckedIn { get; set; }
 
-        public void RemoveGuest(string name) => guestList.Remove(name);
-        public string name;
-        public string Firmanavn;
-        public string TimeOfArrival;
-        public string guestId;
+        private Logger logger;
 
-        public void ShowGuests()
+        public Guest(string id, string name, string firmanavn, Logger loggerInstance)
         {
-            if(guestList.Count == 0)
+            GuestId = id;
+            Name = name;
+            Firmanavn = firmanavn;
+            IsCheckedIn = false;
+            logger = loggerInstance;
+        }
+
+        public void CheckIn()
+        {
+            if (!IsCheckedIn)
             {
-                Console.WriteLine("No guests available.");
-                return;
+                IsCheckedIn = true;
+                logger.Log($"{Name} ({Firmanavn}) [ID: {GuestId}] has checked in.");
+                Console.WriteLine($"{Name} from {Firmanavn} has checked in.");
             }
             else
-                foreach (var guest in guestList)
-                {
-                    Console.WriteLine(guest);
-                }
+            {
+                Console.WriteLine($"{Name} is already checked in.");
+            }
         }
+
+        public void CheckOut()
+        {
+            if (IsCheckedIn)
+            {
+                IsCheckedIn = false;
+                logger.Log($"{Name} ({Firmanavn}) [ID: {GuestId}] has checked out.");
+                Console.WriteLine($"{Name} from {Firmanavn} has checked out.");
+            }
+            else
+            {
+                Console.WriteLine($"{Name} is not checked in.");
+            }
+        }
+        
         public void safetyFolder()
         {
             Console.WriteLine("Safety folder has been handed out to the guest.");
