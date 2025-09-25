@@ -1,82 +1,141 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hydac
 {
+    public enum Mood
+    {
+        Happy,
+        Neutral,
+        Angry
+    }
+
+    public class StaffMember
+    {
+        public string Name { get; }
+        public int ID { get; }
+        public bool IsLoggedIn { get; set; }
+        public Mood Mood { get; set; }
+
+        public StaffMember(string name, int id)
+        {
+            Name = name;
+            ID = id;
+            IsLoggedIn = false;     // default
+            Mood = Mood.Neutral;    // default
+        }
+    }
+
     public class Staff
     {
-        Logger logger = new Logger();   
-        private string[] name = { "Mark", "John", "Lisa", "Mona Lisa" }; // <= Navn
-        private List<string> staffMembers = new List<string>();
-        private int[] staffid = [2012, 1212, 2223, 3324]; // <= User ID
-        private List<int> staffIDs = new List<int>();   
-        private List<bool> staffStatus = new List<bool>(); // True = logged in, False = logged out
-        private List<string> staffMood = new List<string>(); // Happy, Neutral, Angry
+        private readonly Logger logger = new Logger();
+        private readonly List<StaffMember> staffMembers = new List<StaffMember>();
 
         public void StaffInit()
         {
-            staffMembers.AddRange(name);
-            staffIDs.AddRange(staffid); 
+            staffMembers.Add(new StaffMember("Mark", 2012));
+            staffMembers.Add(new StaffMember("John", 1212));
+            staffMembers.Add(new StaffMember("Lisa", 2223));
+            staffMembers.Add(new StaffMember("Mona Lisa", 3324));
+
+            logger.Log("Staff initialized with default members.");
         }
 
         public void ShowStaff()
         {
-            if(staffMembers.Count == 0)
+            if (staffMembers.Count == 0)
             {
+                logger.Log("No staff members available to show.");
                 Console.WriteLine("No staff members available.");
                 return;
             }
-            else
-                foreach (var staff in staffMembers)
-                    Console.WriteLine(staff);
+
+            logger.Log("Displaying full staff information:");
+            foreach (var staff in staffMembers)
+            {
+                string status = staff.IsLoggedIn ? "Logged in" : "Logged out";
+                string info = $"Name: {staff.Name}, ID: {staff.ID}, Status: {status}, Mood: {staff.Mood}";
+
+                Console.WriteLine(info);
+                logger.Log(info);
+            }
         }
-        public int getStaffID(string name)
+
+
+        public int GetStaffID(string name)
         {
-            int index = staffMembers.IndexOf(name);
-            if (index != -1 && index < staffIDs.Count)  
-                return staffIDs[index];
-            else
-                Console.WriteLine("Staff member not found.");   
-            return -1;  
-        }   
+            var member = staffMembers.Find(m => m.Name == name);
+            if (member != null)
+            {
+                logger.Log($"Retrieved ID {member.ID} for staff member {name}.");
+                return member.ID;
+            }
 
-        private int getStaffIndex(int id) => staffIDs.IndexOf(id);  
-
+            logger.Log($"Staff member '{name}' not found when requesting ID.");
+            Console.WriteLine("Staff member not found.");
+            return -1;
+        }
 
         public void AddStaffStatus(string name, bool isLoggedIn)
         {
-           int i = getStaffIndex(getStaffID(name));
-           staffStatus[i] = isLoggedIn;    
-           logger.Log($"Staff member {name} has logged {(isLoggedIn ? "in" : "out")}.");
+            var member = staffMembers.Find(m => m.Name == name);
+            if (member == null)
+            {
+                logger.Log($"Attempted to set status for invalid staff member '{name}'.");
+                Console.WriteLine("Invalid staff member.");
+                return;
+            }
+
+            member.IsLoggedIn = isLoggedIn;
+            logger.Log($"Staff member {name} has logged {(isLoggedIn ? "in" : "out")}.");
         }
 
-        public bool getStaffStatus(string name)
+        public bool GetStaffStatus(string name)
         {
-            int i = getStaffIndex(getStaffID(name));
-            return staffStatus[i];
-        }   
+            var member = staffMembers.Find(m => m.Name == name);
+            if (member == null)
+            {
+                logger.Log($"Requested status for invalid staff member '{name}'.");
+                return false;
+            }
 
-        public void AddStaffMood(int selection, string name) // 1 = Happy, 2 = Neutral, 3 = Angry    
-        {
-            int i = getStaffIndex(getStaffID(name));
-            if (selection == 1)
-                staffMood[i]=("Happy");
-            else if(selection == 2)
-                staffMood[i] = ("Neutral");
-            else if(selection == 3)
-                staffMood[i] = ("Angry"); 
+            logger.Log($"Staff member {name} status: {(member.IsLoggedIn ? "Logged in" : "Logged out")}.");
+            return member.IsLoggedIn;
         }
 
-        public string getStaffMood(string name)
+        public void AddStaffMood(int selection, string name)
         {
-            int i = getStaffIndex(getStaffID(name));
-            if(staffMood.Count != 0 && staffMood[i] != null)
-                return staffMood[i];
-            return ("not implemented yet"); 
-        }   
+            var member = staffMembers.Find(m => m.Name == name);
+            if (member == null)
+            {
+                logger.Log($"Attempted to set mood for invalid staff member '{name}'.");
+                return;
+            }
 
+            var oldMood = member.Mood;
+
+            member.Mood = selection switch
+            {
+                1 => Mood.Happy,
+                2 => Mood.Neutral,
+                3 => Mood.Angry,
+                _ => member.Mood
+            };
+
+            logger.Log($"Staff member {name} mood changed from {oldMood} to {member.Mood}.");
+        }
+
+        public string GetStaffMood(string name)
+        {
+            var member = staffMembers.Find(m => m.Name == name);
+            if (member == null)
+            {
+                logger.Log($"Requested mood for invalid staff member '{name}'.");
+                return "not implemented yet";
+            }
+
+            logger.Log($"Staff member {name} mood retrieved: {member.Mood}.");
+            return member.Mood.ToString();
+        }
     }
 }
