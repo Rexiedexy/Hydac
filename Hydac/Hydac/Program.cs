@@ -4,14 +4,12 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-
             MeetingRoom mr = new MeetingRoom();
-            mr.BookRoom(16, 00);
+            mr.BookRoom(1, DateTime.Now, DateTime.Now.AddHours(2));
 
-            foreach (var room in rooms)
+            foreach (var room in mr.Rooms)
             {
-                Console.WriteLine($"{room.name} (Størrelse: {room.size}) - Booket: {room.start} til {room.end}");
+                Console.WriteLine($"\n\n\n{room.name} (Size: {room.size}) - Booked: {room.start} to {room.end}");
             }
         }
     }

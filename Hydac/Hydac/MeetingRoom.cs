@@ -8,34 +8,40 @@ namespace Hydac
 {
     public class MeetingRoom
     {
-        private int userInput;
         private (string name, int size, DateTime? start, DateTime? end)[] rooms =
-            {
-                ("Small living room", 5, null, null),
-                ("Canteen", 50, null, null),
-                ("Aquarium", 30, null, null),
-                ("Small room", 8, null, null),
-                ("Big room", 20, null, null)
-            };
-        public bool BookRoom(string roomName, DateTime start, DateTime end)
         {
-            for (int i = 0; i < rooms.Length; i++)
+            ("Small living room", 5, null, null),
+            ("Canteen", 50, null, null),
+            ("Aquarium", 30, null, null),
+            ("Small room", 8, null, null),
+            ("Big room", 20, null, null)
+        };
+
+        public (string name, int size, DateTime? start, DateTime? end)[] Rooms
+        {
+            get { return rooms; }
+        }
+
+        public bool BookRoom(int userInput, DateTime start, DateTime end)
+        {
+            if (userInput < 0 || userInput >= rooms.Length)
             {
-                if (rooms[i].name == roomName)
-                {
-                    if (rooms[i].start == null || rooms[i].end <= start)
-                    {
-                        rooms[i].start = start;
-                        rooms[i].end = end;
-                        Console.WriteLine($"{roomName} er nu booket fra {start} til {end}");
-                        return true;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"{roomName} er ikke ledigt i det ønskede tidsrum");
-                    return false;
-                }
+                Console.WriteLine("Invalid room choice");
+                return false;
+            }
+
+            if (rooms[userInput].start == null || rooms[userInput].end <= start)
+            {
+                rooms[userInput].start = start;
+                rooms[userInput].end = end;
+                Console.WriteLine($"{rooms[userInput].name} is now booked from {start} to {end}");
+                return true;
+            }
+
+            else
+            {
+                Console.WriteLine($"{rooms[userInput].name} is not available at the requested time");
+                return false;
             }
         }
     }
