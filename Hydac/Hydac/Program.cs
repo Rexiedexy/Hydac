@@ -7,7 +7,7 @@
             string valgMuligheder;
 
             do
-            {  
+            {
                 Console.Clear();
                 Console.WriteLine("Velkommen! Vælg hvad der er relevant for dig\n");
                 Console.WriteLine(" 1. Personale");
@@ -15,20 +15,19 @@
                 Console.WriteLine(" 3. Booking af mødelokale");
                 Console.WriteLine(" 4. Administrator");
 
-                valgMuligheder = Console.ReadKey();
+                valgMuligheder = Console.ReadLine();
 
                 switch (valgMuligheder)
                 {
-                    case "1": 
-                    
-                    case "2": 
+                    case "1": Staff; break;
 
-                    case "3": 
+                    case "2": Guest; break;
 
-                    case "4": 
+                    case "3": MeetingRoom; break;
+
+                    case "4": Admin; break;
                 }
-             }    
-            Console.WriteLine("Hello, World!");
+            }
         }
     }
 }
