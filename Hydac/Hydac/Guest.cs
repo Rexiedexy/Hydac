@@ -8,6 +8,7 @@ namespace Hydac
 {
     public class Guest
     {
+
         public string GuestId { get; set; }
         public string Name { get; set; }
         public string Firmanavn { get; set; }

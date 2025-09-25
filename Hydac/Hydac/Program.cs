@@ -7,11 +7,11 @@ namespace Hydac
         static void Main()
         {
             var logger = new Logger();
-            var manager = new Admin(logger);
+            var admin = new Admin(logger);
 
             // Tilføj nogle test-gæster
-            manager.AddGuest("G1", "Anders", "Hydac");
-            manager.AddGuest("G2", "Maria", "Siemens");
+            admin.AddGuest("G1", "Anders", "Hydac");
+            admin.AddGuest("G2", "Maria", "Siemens");
 
             while (true)
             {
@@ -31,11 +31,11 @@ namespace Hydac
                     case "1": // Guest login
                         Console.Write("Enter your Guest ID: ");
                         string guestId = Console.ReadLine();
-                        manager.CheckGuestById(guestId);
+                        admin.CheckGuestById(guestId);
                         break;
 
                     case "2": // Show all guests
-                        manager.ShowAllGuests();
+                        admin.ShowAllGuests();
                         break;
 
                     case "3": // Add guest
@@ -48,14 +48,14 @@ namespace Hydac
                         Console.Write("Enter Company: ");
                         string newCompany = Console.ReadLine();
 
-                        manager.AddGuest(newId, newName, newCompany);
+                        admin.AddGuest(newId, newName, newCompany);
                         Console.WriteLine("Guest added successfully.");
                         break;
 
                     case "4": // Remove guest
                         Console.Write("Enter Guest ID to remove: ");
                         string removeId = Console.ReadLine();
-                        manager.RemoveGuest(removeId);
+                        admin.RemoveGuest(removeId);
                         break;
 
                     case "5": // Show logs
