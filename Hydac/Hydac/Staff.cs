@@ -106,11 +106,9 @@ namespace Hydac
             }
 
             lock (member)
-            {
-                var oldMood = member.Mood;
                 member.Mood = mood;
-                _logger.Log($"{name}'s mood changed from {oldMood} to {member.Mood}.");
-            }
+
+            _logger.Log($"{name}'s mood changed to {member.Mood}.");
         }
 
         public bool TrySetStaffMood(string name, string moodString)
@@ -147,9 +145,7 @@ namespace Hydac
             }
 
             lock (member)
-            {
                 member.IsLoggedIn = isLoggedIn;
-            }
 
             _logger.Log($"{name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
         }
