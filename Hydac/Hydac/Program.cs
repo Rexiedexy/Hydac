@@ -4,6 +4,7 @@ namespace Hydac
 {
     public class Program
     {
+
         static DateTime GetDate(string date, string year, string atWhichHour) // Usage => Eks: DateTime s = GetDate("22-10", "2025", "18:00");
         {
             int parsedYear = int.Parse(year);
@@ -76,6 +77,8 @@ namespace Hydac
                         break;
                 }
             } while (options != 5);
+
         }
-    }
+    
+}
 }
