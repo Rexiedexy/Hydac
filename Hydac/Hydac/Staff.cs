@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-//hej
+
 namespace Hydac
 {
     public enum Mood
@@ -14,18 +13,26 @@ namespace Hydac
 
     public class StaffMember
     {
-        public string Name { get; init; }
-        public int ID { get; init; }
-        public bool IsLoggedIn { get; set; }
-        public Mood Mood { get; set; }
+        public string Name { get; private set; }
+        public int ID { get; private set; }  
+        private string PassWord { get; }
+        public bool IsLoggedIn { get; private set; }
+        public Mood Mood { get; private set; }
 
-        public StaffMember(string name, int id)
+        public StaffMember(string name, int id, string pass)
         {
             Name = name;
             ID = id;
             IsLoggedIn = false;
+            PassWord = pass;
             Mood = Mood.Neutral;
         }
+
+        public bool ValidatePassword(string password) => PassWord == password;
+
+        public void SetMood(Mood mood) => Mood = mood;
+
+        public void SetLoginStatus(bool status) => IsLoggedIn = status;
 
         public override string ToString() =>
             $"Name: {Name}, ID: {ID}, Status: {(IsLoggedIn ? "Logged in" : "Logged out")}, Mood: {Mood}";
@@ -42,14 +49,14 @@ namespace Hydac
         {
             var initialStaff = new[]
             {
-                new StaffMember("John1", 2012),
-                new StaffMember("John2", 1212),
-                new StaffMember("John3", 2223),
-                new StaffMember("John4", 3324),
-                new StaffMember("John5", 1012),
-                new StaffMember("John6", 1232),
-                new StaffMember("John7", 2923),
-                new StaffMember("John8", 3384)
+                new StaffMember("John1", 2012, "johnernummer1"),
+                new StaffMember("John2", 1212, "johnernummer2"),
+                new StaffMember("John3", 2223, "johnernummer3"),
+                new StaffMember("John4", 3324, "johnernummer4"),
+                new StaffMember("John5", 1012, "johnernummer5"),
+                new StaffMember("John6", 1232, "johnernummer6"),
+                new StaffMember("John7", 2923, "johnernummer7"),
+                new StaffMember("John8", 3384, "johnernummer8")
             };
 
             foreach (var staff in initialStaff)
@@ -77,77 +84,79 @@ namespace Hydac
 
             foreach (var staff in _staffMembers.Values.OrderBy(s => s.ID))
             {
-                Console.WriteLine($"{staff.Name,-15} {staff.ID,-6} {(staff.IsLoggedIn ? "Logged in" : "Logged out"),-12} {staff.Mood,-7}");
+                Console.Write($"{staff.Name,-15} {staff.ID,-6} {(staff.IsLoggedIn ? "Logged in" : "Logged out"),-12} ");
+                switch (staff.Mood)
+                {
+                    case Mood.Happy:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    case Mood.Angry:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    default:
+                        Console.ResetColor();
+                        break;
+                }
+
+                Console.WriteLine($"{staff.Mood,-7}");
+                Console.ResetColor();
                 _logger.Log(staff.ToString());
             }
         }
 
-        public void LogIn(int name) => SetStaffStatus(name, true);
-        public void LogOut(int name) => SetStaffStatus(name, false);
+        public StaffMember? LogIn(int id, string pass) => SetStaffStatus(id, pass, true);
 
-        public bool? GetStaffStatus(string name)
+        public StaffMember? LogOut(int id, string pass) => SetStaffStatus(id, pass, false);
+
+        public bool SetStaffMood(string name, string moodString)
         {
             if (!TryGetStaffByName(name, out var member))
             {
                 _logger.Log($"{name} is not a valid staff member.");
-                return null;
+                return false;
             }
 
-            _logger.Log($"{name} is {(member.IsLoggedIn ? "logged in" : "logged out")}.");
-            return member.IsLoggedIn;
-        }
-
-        public void SetStaffMood(string name, Mood mood)
-        {
-            if (!TryGetStaffByName(name, out var member))
+            if (!member!.IsLoggedIn)
             {
-                _logger.Log($"{name} is not a valid staff member.");
-                return;
+                _logger.Log($"{name} must be logged in to change mood.");
+                Console.WriteLine($"{name} must be logged in to change mood.");
+                return false;
             }
 
-            lock (member)
-                member.Mood = mood;
-
-            _logger.Log($"{name}'s mood changed to {member.Mood}.");
-        }
-
-        public bool TrySetStaffMood(string name, string moodString)
-        {
             if (!Enum.TryParse<Mood>(moodString, true, out var mood))
             {
                 _logger.Log($"Invalid mood input: {moodString}.");
                 return false;
             }
 
-            SetStaffMood(name, mood);
+            lock (member)
+                member.SetMood(mood);
+
+            _logger.Log($"{name}'s mood changed to {member.Mood}.");
             return true;
         }
 
-        public Mood? GetStaffMood(string name)
-        {
-            if (!TryGetStaffByName(name, out var member))
-            {
-                _logger.Log($"{name} is not a valid staff member.");
-                return null;
-            }
-
-            _logger.Log($"{name}'s mood is {member.Mood}.");
-            return member.Mood;
-        }
-
-        private void SetStaffStatus(int id, bool isLoggedIn)
+        private StaffMember? SetStaffStatus(int id, string pass, bool isLoggedIn)
         {
             if (!TryGetStaffById(id, out var member))
             {
-                _logger.Log($"{member.Name} is not a valid staff member.");
+                _logger.Log($"ID {id} is not a valid staff member.");
                 Console.WriteLine("Invalid staff member.");
-                return;
+                return null;
+            }
+
+            if (!member!.ValidatePassword(pass))
+            {
+                _logger.Log($"Wrong password for {member.Name} (ID {member.ID}).");
+                Console.WriteLine("Invalid Password");
+                return null;
             }
 
             lock (member)
-                member.IsLoggedIn = isLoggedIn;
+                member.SetLoginStatus(isLoggedIn);
 
             _logger.Log($"{member.Name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
+            return member;
         }
 
         private bool TryGetStaffByName(string name, out StaffMember? member) =>
@@ -155,29 +164,5 @@ namespace Hydac
 
         private bool TryGetStaffById(int id, out StaffMember? member) =>
             _staffMembers.TryGetValue(id, out member);
-
-        public int? GetStaffID(string name)
-        {
-            if (TryGetStaffByName(name, out var member))
-            {
-                _logger.Log($"ID of {name} is {member.ID}.");
-                return member.ID;
-            }
-
-            _logger.Log($"{name} not found.");
-            return null;
-        }
-
-        public string? GetStaffName(int id)
-        {
-            if (TryGetStaffById(id, out var member))
-            {
-                _logger.Log($"Name of staff with ID {id} is {member.Name}.");
-                return member.Name;
-            }
-
-            _logger.Log($"No staff found with ID {id}.");
-            return null;
-        }
     }
 }
