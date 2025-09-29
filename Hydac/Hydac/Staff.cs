@@ -82,8 +82,8 @@ namespace Hydac
             }
         }
 
-        public void LogIn(string name) => SetStaffStatus(name, true);
-        public void LogOut(string name) => SetStaffStatus(name, false);
+        public void LogIn(int name) => SetStaffStatus(name, true);
+        public void LogOut(int name) => SetStaffStatus(name, false);
 
         public bool? GetStaffStatus(string name)
         {
@@ -135,11 +135,11 @@ namespace Hydac
             return member.Mood;
         }
 
-        private void SetStaffStatus(string name, bool isLoggedIn)
+        private void SetStaffStatus(int id, bool isLoggedIn)
         {
-            if (!TryGetStaffByName(name, out var member))
+            if (!TryGetStaffById(id, out var member))
             {
-                _logger.Log($"{name} is not a valid staff member.");
+                _logger.Log($"{member.Name} is not a valid staff member.");
                 Console.WriteLine("Invalid staff member.");
                 return;
             }
@@ -147,7 +147,7 @@ namespace Hydac
             lock (member)
                 member.IsLoggedIn = isLoggedIn;
 
-            _logger.Log($"{name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
+            _logger.Log($"{member.Name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
         }
 
         private bool TryGetStaffByName(string name, out StaffMember? member) =>
