@@ -5,21 +5,22 @@ namespace Hydac
     public class Program
     {
         static DateTime GetDate(string date, string year, string atWhichHour) // Usage => Eks: DateTime s = GetDate("22-10", "2025", "18:00");
-{
-    int parsedYear = int.Parse(year);
-    DateTime parsedDate = DateTime.ParseExact(date, "dd-MM", null);
-    TimeSpan parsedTime = TimeSpan.Parse(atWhichHour);
-    DateTime finalDate = new DateTime(
-        parsedYear,
-        parsedDate.Month,
-        parsedDate.Day,
-        parsedTime.Hours,
-        parsedTime.Minutes,
-        0
-    );
+        {
+            int parsedYear = int.Parse(year);
+            DateTime parsedDate = DateTime.ParseExact(date, "dd-MM", null);
+            TimeSpan parsedTime = TimeSpan.Parse(atWhichHour);
+            DateTime finalDate = new DateTime(
+                parsedYear,
+                parsedDate.Month,
+                parsedDate.Day,
+                parsedTime.Hours,
+                parsedTime.Minutes,
+                0
+            );
 
-    return finalDate;
-}
+            return finalDate;
+        }
+
         static void Main(string[] args)
         {
             int options;
@@ -74,7 +75,7 @@ namespace Hydac
                         Console.WriteLine(" Du har afsluttet programmet!");
                         break;
                 }
-            }while (options!= 5);
+            } while (options != 5);
         }
     }
 }
