@@ -24,9 +24,12 @@ namespace Hydac
 
         public bool BookRoom(int userInput, DateTime start, DateTime end)
         {
+            Logger logger = new Logger();
+
             if (userInput < 0 || userInput >= rooms.Length)
             {
-                Console.WriteLine("Invalid room choice");
+                //Console.WriteLine("Invalid room choice");
+                logger.Log("Invalid room choice");
                 return false;
             }
 
@@ -34,13 +37,16 @@ namespace Hydac
             {
                 rooms[userInput].start = start;
                 rooms[userInput].end = end;
-                Console.WriteLine($"{rooms[userInput].name} is now booked from {start} to {end}");
+                //Console.WriteLine($"{rooms[userInput].name} is now booked from {start} to {end}");
+
+                logger.Log($"{rooms[userInput].name} is now booked from {start} to {end}");
                 return true;
             }
 
             else
             {
-                Console.WriteLine($"{rooms[userInput].name} is not available at the requested time");
+                //Console.WriteLine($"{rooms[userInput].name} is not available at the requested time");
+                logger.Log($"{rooms[userInput].name} is not available at the requested time");
                 return false;
             }
         }
