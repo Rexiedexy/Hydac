@@ -128,9 +128,7 @@ namespace Hydac
                 _logger.Log($"Invalid mood input: {moodString}.");
                 return false;
             }
-
-            lock (member)
-                member.SetMood(mood);
+            member.SetMood(mood);
 
             _logger.Log($"{name}'s mood changed to {member.Mood}.");
             return true;
@@ -151,9 +149,7 @@ namespace Hydac
                 Console.WriteLine("Invalid Password");
                 return null;
             }
-
-            lock (member)
-                member.SetLoginStatus(isLoggedIn);
+            member.SetLoginStatus(isLoggedIn);
 
             _logger.Log($"{member.Name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
             return member;
