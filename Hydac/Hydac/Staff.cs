@@ -42,14 +42,14 @@ namespace Hydac
         {
             var initialStaff = new[]
             {
-                new StaffMember("John", 2012),
-                new StaffMember("John John", 1212),
-                new StaffMember("John John John", 2223),
-                new StaffMember("John John John John", 3324),
-                new StaffMember("John John John John John", 1012),
-                new StaffMember("John John John John John John", 1232),
-                new StaffMember("John John John John John John John", 2923),
-                new StaffMember("John John John John John John John John", 3384)
+                new StaffMember("John1", 2012),
+                new StaffMember("John2", 1212),
+                new StaffMember("John3", 2223),
+                new StaffMember("John4", 3324),
+                new StaffMember("John5", 1012),
+                new StaffMember("John6", 1232),
+                new StaffMember("John7", 2923),
+                new StaffMember("John8", 3384)
             };
 
             foreach (var staff in initialStaff)
