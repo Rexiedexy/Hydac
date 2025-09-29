@@ -27,10 +27,16 @@ namespace Hydac
         {
             int options;
             int adminOptions;
+            int id;
+            bool programRunningNormally;
+            int userinput;
+            string password;
+
             Staff staff = new Staff();
             staff.StaffInit();
             var logger = new Logger();
             var admin = new Admin(logger);
+            MeetingRoom room = new MeetingRoom();
 
             do
             {
@@ -47,18 +53,51 @@ namespace Hydac
                 switch (options)
                 {
                     case 1:
-                        Console.Clear();
-                        Console.WriteLine("Type you'r staffID");
-                        Console.ReadLine();
-                        Console.WriteLine("How is your mood?\n");
-                        Console.WriteLine(" 1. for Green\n 2. for Yellow\n 3. for Red");
-                        Console.ReadLine();
-                        Console.WriteLine("You are now registered, have a good day :)");
+                        do
+                        {
+                            Console.Clear();
+                            Console.Write("Type you'r staffID: ");
+                            programRunningNormally = int.TryParse(Console.ReadLine(), out id);
+                        } while (programRunningNormally != true);
 
-                        DateTime.TryParse(Console.ReadLine(), out DateTime result);
-                        Console.WriteLine(result);
-                        Console.ReadLine();
-                        break;
+                        do
+                        {
+                            Console.Clear();
+                            Console.Write("Password: ");
+                            password = Console.ReadLine();
+
+                        } while (programRunningNormally != true);
+                        var user = staff.LogIn(id, password);
+
+                        if (user != null)
+                        {
+                            do
+                            {
+                                Console.Clear();
+                                //Console.WriteLine($"Hello {staff.GetStaffName(id)}\n");
+                                Console.WriteLine("How is your mood?\n");
+                                Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
+                                programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
+                            } while (programRunningNormally != true || userinput > 4 || userinput < 1);
+
+                            //staff.SetStaffMood(id (Mood)(userinput - 1));
+
+                            staff.ShowStaff();
+                            Console.WriteLine("You are now registe, have a good day :");
+
+
+                            room.ShowRooms();
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Staff id and password dosen't match");
+                            Console.WriteLine("Press Enter to go back");
+                            Console.ReadKey();
+                        }
+
+                            break;
 
                     case 2:
                         Console.Clear();
@@ -86,7 +125,7 @@ namespace Hydac
                                     Console.WriteLine("Type in the name of the staff member");
                                     string name = Console.ReadLine();
                                     Console.WriteLine("Type in the ID of the staff member");
-                                    int.TryParse(Console.ReadLine(), out int id);
+                                    int.TryParse(Console.ReadLine(), out id);
                                     break;
                                 case 2:
                                     Console.Clear();
@@ -146,7 +185,7 @@ namespace Hydac
             } while (options != 5);
 
         }
-    
-}
+
+    }
 }
 
