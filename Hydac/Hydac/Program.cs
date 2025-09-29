@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hydac;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hydac
 {
@@ -25,8 +26,11 @@ namespace Hydac
         static void Main(string[] args)
         {
             int options;
+            int adminOptions;
             Staff staff = new Staff();
             staff.StaffInit();
+            var logger = new Logger();
+            var admin = new Admin(logger);
 
             do
             {
@@ -34,8 +38,9 @@ namespace Hydac
                 Console.WriteLine("Welcome! Pick whats relevant for you\n");
                 Console.WriteLine(" 1. Staff");
                 Console.WriteLine(" 2. Guest");
-                Console.WriteLine(" 3. Admin");
-                Console.WriteLine(" 4. Exit");
+                Console.WriteLine(" 3. Meeting Room");
+                Console.WriteLine(" 4. Admin");
+                Console.WriteLine(" 5. Exit");
 
                 int.TryParse(Console.ReadLine(), out options);
 
@@ -44,11 +49,11 @@ namespace Hydac
                     case 1:
                         Console.Clear();
                         Console.WriteLine("Type you'r staffID");
-
+                        Console.ReadLine();
                         Console.WriteLine("How is your mood?\n");
-                        Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
-
-                        Console.WriteLine("You are now registe, have a good day :)");
+                        Console.WriteLine(" 1. for Green\n 2. for Yellow\n 3. for Red");
+                        Console.ReadLine();
+                        Console.WriteLine("You are now registered, have a good day :)");
 
                         DateTime.TryParse(Console.ReadLine(), out DateTime result);
                         Console.WriteLine(result);
@@ -58,6 +63,8 @@ namespace Hydac
                     case 2:
                         Console.Clear();
                         Console.WriteLine("Type in your guestID and take a seat in the lobby");
+                        string guestId = Console.ReadLine();
+                        admin.CheckGuestById(guestId);
                         break;
 
                     case 3:
@@ -67,13 +74,73 @@ namespace Hydac
                         break;
 
                     case 4:
-                        Console.Clear();
-                        Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest");
+                        do
+                        {
+                            Console.Clear();
+                            Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Exit");
+                            int.TryParse(Console.ReadLine(), out adminOptions);
+                            switch (adminOptions)
+                            {
+                                case 1:
+                                    Console.Clear();
+                                    Console.WriteLine("Type in the name of the staff member");
+                                    string name = Console.ReadLine();
+                                    Console.WriteLine("Type in the ID of the staff member");
+                                    int.TryParse(Console.ReadLine(), out int id);
+                                    break;
+                                case 2:
+                                    Console.Clear();
+                                    Console.WriteLine("Type in the ID of the staff member you want to delete");
+                                    int.TryParse(Console.ReadLine(), out int removeId);
+                                    break;
+                                case 3:
+                                    Console.Clear();
+                                    Console.Write("Enter new Guest ID: ");
+                                    string newGuestId = Console.ReadLine();
+
+                                    Console.Write("Enter Guest Name: ");
+                                    string newName = Console.ReadLine();
+
+                                    Console.Write("Enter Company: ");
+                                    string newCompany = Console.ReadLine();
+
+                                    admin.AddGuest(newGuestId, newName, newCompany);
+                                    Console.WriteLine("Guest added successfully.");
+                                    Console.WriteLine("Press Enter to continue...");
+                                    Console.ReadKey();
+                                    break;
+                                case 4:
+                                    Console.Clear();
+                                    Console.WriteLine("Type in the ID of the guest you want to delete");
+                                    string removeGuestId = Console.ReadLine();
+                                    if (admin.RemoveGuest(removeGuestId))
+                                    {
+                                        Console.WriteLine("Guest removed successfully.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Guest with ID {removeGuestId} not found.");
+                                    }
+                                    Console.WriteLine("Press Enter to continue...");
+                                    Console.ReadKey();
+                                    break;
+                                case 5:
+                                    Console.Clear();
+                                    logger.ShowLogs();
+                                    Console.WriteLine("Press Enter to continue...");
+                                    Console.ReadKey();
+                                    break;
+                                case 6:
+                                    Console.Clear();
+                                    Console.WriteLine("You have exited the admin menu");
+                                    break;
+                            }
+                        } while (adminOptions != 6);
                         break;
 
                     case 5:
                         Console.Clear();
-                        Console.WriteLine(" Du har afsluttet programmet!");
+                        Console.WriteLine("You have closed the program");
                         break;
                 }
             } while (options != 5);
@@ -82,3 +149,4 @@ namespace Hydac
     
 }
 }
+

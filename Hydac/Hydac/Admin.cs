@@ -17,7 +17,7 @@ namespace Hydac
             logger = log;
         }
 
-        public void AddGuest(string id, string name, string firmanavn)
+        public void AddGuest(string id, string name, string companyname)
         {
             if (!IsValidName(name))
             {
@@ -25,8 +25,8 @@ namespace Hydac
                 return;
             }
 
-            guests.Add(new Guest(id, name, firmanavn, logger));
-            Console.WriteLine($"Guest {name} ({firmanavn}) added successfully.");
+            guests.Add(new Guest(id, name, companyname, logger));
+            Console.WriteLine($"Guest {name} ({companyname}) added successfully.");
         }
         private bool IsValidName(string name)
         {
@@ -60,21 +60,20 @@ namespace Hydac
         {
             foreach (var g in guests)
             {
-                Console.WriteLine($"{g.Name} ({g.Firmanavn}) [ID: {g.GuestId}] - {(g.IsCheckedIn ? "Checked In" : "Checked Out")}");
+                Console.WriteLine($"{g.Name} ({g.CompanyName}) [ID: {g.GuestId}] - {(g.IsCheckedIn ? "Checked In" : "Checked Out")}");
             }
         }
-        public void RemoveGuest(string id)
+        public bool RemoveGuest(string id)
         {
             var guest = guests.Find(g => g.GuestId == id);
             if (guest != null)
             {
                 guests.Remove(guest);
-                Console.WriteLine($"{guest.Name} ({guest.Firmanavn}) [ID: {guest.GuestId}] has been removed.");
+                logger.Log($"Guest {guest.Name} ({guest.CompanyName}) [ID: {guest.GuestId}] has been removed.");
+                return true;
             }
-            else
-            {
-                Console.WriteLine($"Guest with ID {id} not found.");
-            }
+            return false;
+
         }
     }
 }
