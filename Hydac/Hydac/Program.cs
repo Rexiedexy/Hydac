@@ -4,6 +4,7 @@ namespace Hydac
 {
     public class Program
     {
+
         static void Main(string[] args)
         {
             int options;
@@ -31,9 +32,10 @@ namespace Hydac
                         Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
 
                         Console.WriteLine("You are now registe, have a good day :)");
-                        int hje = Console.ReadLine();
-                        staff.LogIn(hje);
 
+                        DateTime.TryParse(Console.ReadLine(), out DateTime result);
+                        Console.WriteLine(result);
+                        Console.ReadLine();
                         break;
 
                     case 2:
