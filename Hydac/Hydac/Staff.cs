@@ -108,11 +108,11 @@ namespace Hydac
 
         public StaffMember? LogOut(int id, string pass) => SetStaffStatus(id, pass, false);
 
-        public bool SetStaffMood(string name, string moodString)
+        public bool SetStaffMood(int id, string moodString)
         {
-            if (!TryGetStaffByName(name, out var member))
+            if (!TryGetStaffByName(id, out var member))
             {
-                _logger.Log($"{name} is not a valid staff member.");
+                _logger.Log($"{id} is not a valid staff member.");
                 return false;
             }
 

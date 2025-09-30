@@ -60,13 +60,10 @@ namespace Hydac
                             programRunningNormally = int.TryParse(Console.ReadLine(), out id);
                         } while (programRunningNormally != true);
 
-                        do
-                        {
-                            Console.Clear();
-                            Console.Write("Password: ");
-                            password = Console.ReadLine();
+                        Console.Clear();
+                        Console.Write("Password: ");
+                        password = Console.ReadLine();
 
-                        } while (programRunningNormally != true);
                         var user = staff.LogIn(id, password);
 
                         if (user != null)
@@ -74,7 +71,7 @@ namespace Hydac
                             do
                             {
                                 Console.Clear();
-                                //Console.WriteLine($"Hello {staff.GetStaffName(id)}\n");
+                                Console.WriteLine($"Hello staff: ID{id}");
                                 Console.WriteLine("How is your mood?\n");
                                 Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
@@ -83,13 +80,12 @@ namespace Hydac
                             //staff.SetStaffMood(id (Mood)(userinput - 1));
 
                             staff.ShowStaff();
-                            Console.WriteLine("You are now registe, have a good day :");
+                            Console.WriteLine("You are now registered, have a good day :");
 
-
-                            room.ShowRooms();
                             Console.ReadLine();
                             staff.LogOut(id, password);
                         }
+
                         else
                         {
                             Console.Clear();
@@ -97,8 +93,7 @@ namespace Hydac
                             Console.WriteLine("Press Enter to go back");
                             Console.ReadKey();
                         }
-
-                            break;
+                        break;
 
                     case 2:
                         Console.Clear();
