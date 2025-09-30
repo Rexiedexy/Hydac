@@ -56,7 +56,7 @@ namespace Hydac
                         do
                         {
                             Console.Clear();
-                            Console.Write("Type you'r staffID: ");
+                            Console.Write("Type your staffID: ");
                             programRunningNormally = int.TryParse(Console.ReadLine(), out id);
                         } while (programRunningNormally != true);
 
@@ -71,19 +71,17 @@ namespace Hydac
                             do
                             {
                                 Console.Clear();
-                                Console.WriteLine($"Hello staff: ID{id}");
+                                Console.WriteLine($"Hello {user.Name}");
                                 Console.WriteLine("How is your mood?\n");
-                                Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
+                                Console.WriteLine(" 1. If you feel Green\n 2. If you feel Yellow\n 3. If you feel Red");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
                             } while (programRunningNormally != true || userinput >= 4 || userinput < 1);
-
-                            Console.WriteLine("You are now registered, have a good day :");
-
+                            Console.Clear();
+                            Console.WriteLine("You are now registered, have a good day :D(sex)");
+                            Console.ReadLine();
                             staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(userinput - 1));
-
                             Console.Clear();
 
-                            Console.ReadLine();
                             staff.LogOut(id, password);
                         }
 
