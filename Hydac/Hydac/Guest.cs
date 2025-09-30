@@ -25,6 +25,7 @@ namespace Hydac
             logger = loggerInstance;
         }
 
+
         public void CheckIn()
         {
             if (!IsCheckedIn)

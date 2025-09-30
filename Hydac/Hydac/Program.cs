@@ -33,9 +33,10 @@ namespace Hydac
             string password;
 
             Staff staff = new Staff();
-            staff.StaffInit();
             var logger = new Logger();
             var admin = new Admin(logger);
+            admin.AdminInit();
+            staff.StaffInit();
             MeetingRoom room = new MeetingRoom();
 
             do

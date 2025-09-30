@@ -70,51 +70,6 @@ namespace Hydac
         }
 
 
-        public bool AddStaff(string name, int ID, string Pass)
-        {
-            var m = new StaffMember(name, ID, Pass);
-            if(_staffMembers.TryAdd(m.ID, m) && _staffByName.TryAdd(m.Name, m))
-            {
-                _logger.Log($"{m.Name} Has Been Added As A Staffmember");
-                return true;
-            }
-            else
-                _logger.Log($"{name} Could Not Be Added As A Staffmember");
-            m = null; 
-            return false; 
-        }
-
-
-        public bool? RemoveStaff(string name, int ID, string Pass)
-        {
-            if (!TryGetStaffById(ID, out var member))
-            {
-                _logger.Log($"ID {ID} is not a valid staff member.");
-                Console.WriteLine("Invalid staff member.");
-                return null;
-            }
-            if (!member!.ValidatePassword(Pass))
-            {
-                _logger.Log($"Wrong password for {member.Name} (ID {member.ID}).");
-                Console.WriteLine("Invalid Password");
-                return null;
-            }
-            if (!TryGetStaffByName(name, out var member1))
-            {
-                _logger.Log($"{name} is not a valid staff member.");
-                return false;
-            }
-            if (_staffMembers.TryRemove(member.ID, out member) && _staffByName.TryRemove(member.Name, out member))
-           {
-                member = null; 
-                _logger.Log($"{name} Has Been Removed As A Staffmember");
-                return true;
-            }
-
-            return false; 
-        }
-
-
         public void ShowStaff()
         {
             if (_staffMembers.IsEmpty)
