@@ -86,26 +86,28 @@ namespace Hydac
 
         public bool? RemoveStaff(string name, int ID, string Pass)
         {
-
             if (!TryGetStaffById(ID, out var member))
             {
                 _logger.Log($"ID {ID} is not a valid staff member.");
                 Console.WriteLine("Invalid staff member.");
                 return null;
             }
-
             if (!member!.ValidatePassword(Pass))
             {
                 _logger.Log($"Wrong password for {member.Name} (ID {member.ID}).");
                 Console.WriteLine("Invalid Password");
                 return null;
             }
-
-           /*if (_staffMembers.TryRemove(member.ID, member) && _staffByName.TryRemove(member.Name, member))
+            if (!TryGetStaffByName(name, out var member1))
+            {
+                _logger.Log($"{name} is not a valid staff member.");
+                return false;
+            }
+            if (_staffMembers.TryRemove(member.ID, out member) && _staffByName.TryRemove(member.Name, out member))
            {
-                _logger.Log($"{member.Name} Has Been Added As A Staffmember");
+                _logger.Log($"{name} Has Been Removed As A Staffmember");
                 return true;
-            }*/
+            }
 
             return false; 
         }
