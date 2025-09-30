@@ -88,6 +88,7 @@ namespace Hydac
 
                             room.ShowRooms();
                             Console.ReadLine();
+                            staff.LogOut(id, password);
                         }
                         else
                         {
