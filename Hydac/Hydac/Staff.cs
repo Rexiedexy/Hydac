@@ -108,7 +108,7 @@ namespace Hydac
 
         public StaffMember? LogOut(int id, string pass) => SetStaffStatus(id, pass, false);
 
-        public bool SetStaffMood(string name, string moodString)
+        public bool SetStaffMood(string name, Mood mood)
         {
             if (!TryGetStaffByName(name, out var member))
             {
@@ -120,12 +120,6 @@ namespace Hydac
             {
                 _logger.Log($"{name} must be logged in to change mood.");
                 Console.WriteLine($"{name} must be logged in to change mood.");
-                return false;
-            }
-
-            if (!Enum.TryParse<Mood>(moodString, true, out var mood))
-            {
-                _logger.Log($"Invalid mood input: {moodString}.");
                 return false;
             }
             member.SetMood(mood);
