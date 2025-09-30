@@ -58,12 +58,5 @@ namespace Hydac
                 Console.WriteLine($"Room: {room.name} - Room Size: {room.size} - Booked from: {room.start} - Booked to: {room.end}");
             }
         }
-
-        public void BookRoomMenu()
-        {
-            Console.WriteLine("1. Book a room");
-            Console.WriteLine("2. Check bookings");
-            Console.WriteLine("");
-        }
     }
 }

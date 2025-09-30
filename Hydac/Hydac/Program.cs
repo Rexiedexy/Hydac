@@ -45,9 +45,8 @@ namespace Hydac
                 Console.WriteLine("Welcome! Pick whats relevant for you\n");
                 Console.WriteLine(" 1. Staff");
                 Console.WriteLine(" 2. Guest");
-                Console.WriteLine(" 3. Meeting Room");
-                Console.WriteLine(" 4. Admin");
-                Console.WriteLine(" 5. Exit");
+                Console.WriteLine(" 3. Admin");
+                Console.WriteLine(" 4. Exit");
 
                 int.TryParse(Console.ReadLine(), out options);
 
@@ -76,12 +75,13 @@ namespace Hydac
                                 Console.WriteLine("How is your mood?\n");
                                 Console.WriteLine(" 1. for Green\n 2. for yellow\n 3. for Red");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
-                            } while (programRunningNormally != true || userinput > 4 || userinput < 1);
+                            } while (programRunningNormally != true || userinput >= 4 || userinput < 1);
 
-                            //staff.SetStaffMood(id (Mood)(userinput - 1));
-
-                            staff.ShowStaff();
                             Console.WriteLine("You are now registered, have a good day :");
+
+                            staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(userinput - 1));
+
+                            Console.Clear();
 
                             Console.ReadLine();
                             staff.LogOut(id, password);
@@ -104,12 +104,6 @@ namespace Hydac
                         break;
 
                     case 3:
-                        Console.Clear();
-                        Console.WriteLine("What room would you like too book?\n");
-                        Console.WriteLine(" 1. Small living room\n 2. Canteen\n 3. Aquarium\n 4. Small room\n 5. Big room");
-                        break;
-
-                    case 4:
                         do
                         {
                             Console.Clear();
@@ -174,12 +168,12 @@ namespace Hydac
                         } while (adminOptions != 6);
                         break;
 
-                    case 5:
+                    case 4:
                         Console.Clear();
                         Console.WriteLine("You have closed the program");
                         break;
                 }
-            } while (options != 5);
+            } while (options != 4);
 
         }
 
