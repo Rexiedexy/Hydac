@@ -14,7 +14,7 @@ namespace Hydac
     public class StaffMember
     {
         public string Name { get; private set; }
-        public int ID { get; private set; }  
+        public int ID { get; private set; }
         private string PassWord { get; }
         public bool IsLoggedIn { get; private set; }
         public Mood Mood { get; private set; }
@@ -110,9 +110,9 @@ namespace Hydac
 
         public bool SetStaffMood(string name, Mood mood)
         {
-            if (!TryGetStaffByName(id, out var member))
+            if (!TryGetStaffByName(name, out var member))
             {
-                _logger.Log($"{id} is not a valid staff member.");
+                _logger.Log($"{name} is not a valid staff member.");
                 return false;
             }
 
