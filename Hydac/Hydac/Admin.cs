@@ -103,7 +103,6 @@ namespace Hydac
         }
 
 
-        Staff Staff { get; set; }
         //STAFF MANAGEMENT
         public bool AddStaff(string name, int ID, string Pass)
         {
@@ -147,8 +146,6 @@ namespace Hydac
             return true;
         }
 
-        private bool TryGetStaffByName(string name, out StaffMember? member) =>
-            Staff._staffByName.TryGetValue(name, out member);
 
         private bool TryGetStaffById(int id, out StaffMember? member) =>
             Staff._staffMembers.TryGetValue(id, out member);
