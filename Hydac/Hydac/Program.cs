@@ -27,6 +27,7 @@ namespace Hydac
         {
             int options;
             int adminOptions;
+            int staffOptions;
             int id;
             bool programRunningNormally;
             int userinput;
@@ -76,11 +77,54 @@ namespace Hydac
                                 Console.WriteLine(" 1. If you feel Green\n 2. If you feel Yellow\n 3. If you feel Red");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
                             } while (programRunningNormally != true || userinput >= 4 || userinput < 1);
-                            Console.Clear();
-                            Console.WriteLine("You are now registered, have a good day :D");
-                            Console.ReadLine();
+
                             staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(userinput - 1));
                             Console.Clear();
+
+                            do
+                            {
+                                Console.WriteLine($"You are now registered {user.Name}, have a good day :D");
+                                Console.WriteLine("1. Book room");
+                                Console.WriteLine("2. Go back");
+                                programRunningNormally = int.TryParse(Console.ReadLine(), out staffOptions);
+
+                            } while (programRunningNormally != true || staffOptions >= 3 || staffOptions < 1);
+
+                            switch (staffOptions)
+                            {
+                                case 1:
+                                    int day;
+                                    int month;
+                                    int houres = 0;
+                                    int minutes = 0;
+                                    string timeInput;
+
+                                    Console.WriteLine("Current bookings:");
+                                    room.ShowRooms();
+                                    Console.Write("\n\nWished day for the booking: ");
+                                    int.TryParse(Console.ReadLine(), out day);
+                                    Console.Write("\n\nWished month for the booking: ");
+                                    int.TryParse(Console.ReadLine(), out month);
+                                    Console.Write("\n\nWished time for the booking: (HH:mm)");
+                                    timeInput = Console.ReadLine();
+
+                                    string[] time = timeInput.Split(':');
+                                    if (time.Length == 2)
+                                    {
+                                        int.TryParse(time[0], out houres);
+                                        int.TryParse(time[1], out minutes);
+                                    }
+                                    
+
+                                    DateTime startDate = new DateTime(DateTime.Now.Year, month, day, houres, minutes, 00);
+                                    room.BookRoom(0, startDate, DateTime.Now.AddDays(5));
+                                    room.ShowRooms();
+                                    break;
+                                case 2:
+
+                                    break;
+
+                            }
 
                             staff.LogOut(id, password);
                             //DateTime bookning = new DateTime(30, 09, 2002, 3, 30, 01);
@@ -124,8 +168,8 @@ namespace Hydac
                                         Console.WriteLine($"Added {name} as a staffmember");
                                     else
                                         Console.WriteLine($"Failed to Add {name}");
-                                    Console.ReadKey(); 
-                                        break;
+                                    Console.ReadKey();
+                                    break;
                                 case 2:
                                     Console.Clear();
                                     Console.WriteLine("Type in the ID of the staff member you want to delete");
