@@ -12,9 +12,7 @@ namespace Hydac
     {
         private List<Guest> guests = new List<Guest>();
         private Logger logger;
-        private readonly ConcurrentDictionary<int, StaffMember> _staffMembers = new();
-        private readonly ConcurrentDictionary<string, StaffMember> _staffByName =
-            new(StringComparer.OrdinalIgnoreCase);
+
         private readonly ConcurrentDictionary<string, AdminMembers> _adminMembers = new();
         private readonly ConcurrentDictionary<string, AdminMembers> _adminByName =
             new(StringComparer.OrdinalIgnoreCase);
@@ -105,13 +103,14 @@ namespace Hydac
         }
 
 
-
+        Staff Staff { get; set; }
         //STAFF MANAGEMENT
         public bool AddStaff(string name, int ID, string Pass)
         {
             var m = new StaffMember(name, ID, Pass);
-            if (_staffMembers.TryAdd(m.ID, m) && _staffByName.TryAdd(m.Name, m))
+            if (Staff._staffMembers.TryAdd(m.ID, m) && Staff._staffByName.TryAdd(m.Name, m))
             {
+                
                 logger.Log($"{m.Name} Has Been Added As A Staffmember");
                 return true;
             }
@@ -138,8 +137,8 @@ namespace Hydac
                 return null;
             }
 
-            if (!_staffMembers.TryRemove(member.ID, out _) ||
-                !_staffByName.TryRemove(member.Name, out _))
+            if (!Staff._staffMembers.TryRemove(member.ID, out _) ||
+                !Staff._staffByName.TryRemove(member.Name, out _))
             {
                 return false;
             }
@@ -149,10 +148,10 @@ namespace Hydac
         }
 
         private bool TryGetStaffByName(string name, out StaffMember? member) =>
-            _staffByName.TryGetValue(name, out member);
+            Staff._staffByName.TryGetValue(name, out member);
 
         private bool TryGetStaffById(int id, out StaffMember? member) =>
-            _staffMembers.TryGetValue(id, out member);
+            Staff._staffMembers.TryGetValue(id, out member);
     }
 }
 

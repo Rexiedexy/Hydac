@@ -10,7 +10,6 @@ namespace Hydac
         Neutral,
         Angry
     }
-
     public class StaffMember
     {
         public string Name { get; private set; }

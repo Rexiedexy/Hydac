@@ -119,7 +119,13 @@ namespace Hydac
                                     string name = Console.ReadLine();
                                     Console.WriteLine("Type in the ID of the staff member");
                                     int.TryParse(Console.ReadLine(), out id);
-                                    break;
+                                    Console.WriteLine("Type in the Password of the staff member");
+                                    if (admin.AddStaff(name, id, Console.ReadLine()))
+                                        Console.WriteLine($"Added {name} as a staffmember");
+                                    else
+                                        Console.WriteLine($"Failed to Add {name}");
+                                    Console.ReadKey(); 
+                                        break;
                                 case 2:
                                     Console.Clear();
                                     Console.WriteLine("Type in the ID of the staff member you want to delete");
