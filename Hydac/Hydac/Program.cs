@@ -265,9 +265,6 @@ namespace Hydac
                         break;
                 }
             } while (options != 4);
-
         }
-
     }
 }
-
