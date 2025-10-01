@@ -53,9 +53,9 @@ namespace Hydac
 
         public void ShowRooms()
         {
-            foreach (var room in rooms)
+            for (int i = 0; i < rooms.Length; i++) 
             {
-                Console.WriteLine($"Room: {room.name} - Room Size: {room.size} - Booked from: {room.start} - Booked to: {room.end}");
+                Console.WriteLine($"Room {i+1}: {rooms[i].name} - Room Size: {rooms[i].size} - Booked from: {rooms[i].start} - Booked to: {rooms[i].end}");
             }
         }
     }
