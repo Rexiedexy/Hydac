@@ -66,6 +66,7 @@ namespace Hydac
             if (guest == null)
             {
                 Console.WriteLine("Guest not found!");
+                System.Threading.Thread.Sleep(1000);
                 return;
             }
 
@@ -80,6 +81,8 @@ namespace Hydac
                 guest.CheckOut();
             else
                 Console.WriteLine("Invalid choice.");
+            System.Threading.Thread.Sleep(1000);
+
         }
 
         /*public void ShowAllGuests()

@@ -77,15 +77,15 @@ namespace Hydac
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
                             } while (programRunningNormally != true || userinput >= 4 || userinput < 1);
                             Console.Clear();
-                            Console.WriteLine("You are now registered, have a good day :D(sex)");
+                            Console.WriteLine("You are now registered, have a good day :D");
                             Console.ReadLine();
                             staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(userinput - 1));
                             Console.Clear();
 
                             staff.LogOut(id, password);
-                            DateTime bookning = new DateTime(30, 09, 2002, 3, 30, 01);
-                            room.BookRoom(1,DateTime.Now, DateTime.Now);
-                            room.ShowRooms();
+                            //DateTime bookning = new DateTime(30, 09, 2002, 3, 30, 01);
+                            //room.BookRoom(1,DateTime.Now, DateTime.Now);
+                            //room.ShowRooms();
                             Console.ReadKey();
                         }
 
