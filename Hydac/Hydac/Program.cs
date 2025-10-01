@@ -5,32 +5,15 @@ namespace Hydac
 {
     public class Program
     {
-
-        static DateTime GetDate(string date, string year, string atWhichHour) // Usage => Eks: DateTime s = GetDate("22-10", "2025", "18:00");
-        {
-            int parsedYear = int.Parse(year);
-            DateTime parsedDate = DateTime.ParseExact(date, "dd-MM", null);
-            TimeSpan parsedTime = TimeSpan.Parse(atWhichHour);
-            DateTime finalDate = new DateTime(
-                parsedYear,
-                parsedDate.Month,
-                parsedDate.Day,
-                parsedTime.Hours,
-                parsedTime.Minutes,
-                0
-            );
-
-            return finalDate;
-        }
-
         static void Main(string[] args)
         {
             int options;
             int adminOptions;
+            int staffOptions;
             int id;
-            bool programRunningNormally;
-            int userinput;
+            int mood;
             string password;
+            bool programRunningNormally;
 
             Staff staff = new Staff();
             var logger = new Logger();
@@ -47,7 +30,7 @@ namespace Hydac
                 Console.WriteLine(" 2. Guest");
                 Console.WriteLine(" 3. Admin");
                 Console.WriteLine(" 4. Exit");
-
+                Console.Write("\n\nSelectet: ");
                 int.TryParse(Console.ReadLine(), out options);
 
                 switch (options)
@@ -74,19 +57,114 @@ namespace Hydac
                                 Console.WriteLine($"Hello {user.Name}");
                                 Console.WriteLine("How is your mood?\n");
                                 Console.WriteLine(" 1. If you feel Green\n 2. If you feel Yellow\n 3. If you feel Red");
-                                programRunningNormally = int.TryParse(Console.ReadLine(), out userinput);
-                            } while (programRunningNormally != true || userinput >= 4 || userinput < 1);
-                            Console.Clear();
-                            Console.WriteLine("You are now registered, have a good day :D");
-                            Console.ReadLine();
-                            staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(userinput - 1));
+                                Console.Write("\n\nSelectet: ");
+                                programRunningNormally = int.TryParse(Console.ReadLine(), out mood);
+                            } while (programRunningNormally != true || mood >= 4 || mood < 1);
+
+                            staff.SetStaffMood(Convert.ToString(user.Name), (Mood)(mood - 1));
                             Console.Clear();
 
+                            do
+                            {
+                                Console.WriteLine($"You are now registered {user.Name}, have a good day :D\n");
+                                Console.WriteLine("1. Book room");
+                                Console.WriteLine("2. Go back");
+                                Console.Write("\n\nSelectet: ");
+                                programRunningNormally = int.TryParse(Console.ReadLine(), out staffOptions);
+                                Console.Clear();
+
+                            } while (programRunningNormally != true || staffOptions >= 3 || staffOptions < 1);
+                            switch (staffOptions)
+                            {
+                                case 1:
+                                    int roomOption;
+                                    int day;
+                                    int month;
+                                    int Houres = 0;
+                                    int Minutes = 0;
+                                    string timeInput;
+
+                                    DateTime startTime;
+                                    DateTime endTime = DateTime.MinValue;
+
+                                    programRunningNormally = false;
+
+                                    Console.WriteLine("Current bookings:");
+                                    room.ShowRooms();
+                                    Console.Write("\n\nWhised room to book: ");
+                                    int.TryParse(Console.ReadLine(), out roomOption);
+                                    Console.Write("\n\nWished day for the booking: ");
+                                    int.TryParse(Console.ReadLine(), out day);
+                                    Console.Write("\n\nWished month for the booking: ");
+                                    int.TryParse(Console.ReadLine(), out month);
+
+                                    do
+                                    {
+                                        Console.Write("\n\nWished time for the booking (HH:mm): ");
+                                        timeInput = Console.ReadLine();
+
+                                        string[] time = timeInput.Split(':');
+                                        if (time.Length == 2)
+                                        {
+                                            int.TryParse(time[0], out Houres);
+                                            int.TryParse(time[1], out Minutes);
+
+                                            programRunningNormally = true;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Wrong time format, try again!");
+                                            Console.Clear();
+                                            Console.WriteLine("Rooms:");
+                                            room.ShowRooms();
+                                        }
+                                    } while (programRunningNormally != true);
+                                    startTime = new DateTime(DateTime.Now.Year, month, day, Houres, Minutes, 00);
+
+                                    programRunningNormally = false;
+                                    do
+                                    {
+                                        Console.Write("\n\nWished time for the booking to stop (HH:mm): ");
+                                        timeInput = Console.ReadLine();
+
+                                        string[] time = timeInput.Split(':');
+                                        if (time.Length == 2)
+                                        {
+                                            int.TryParse(time[0], out Houres);
+                                            int.TryParse(time[1], out Minutes);
+                                            endTime = new DateTime(DateTime.Now.Year, month, day, Houres, Minutes, 00);
+
+                                            if (endTime > startTime)
+                                            {
+                                                programRunningNormally = true;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("End time must be after start time, try again");
+                                                Console.Clear();
+                                                Console.WriteLine("Current bookings:");
+                                                room.ShowRooms();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Wrong time format, try again!");
+                                            Console.Clear();
+                                            Console.WriteLine("Current bookings:");
+                                            room.ShowRooms();
+                                        }
+                                    } while (programRunningNormally != true);
+
+                                    room.BookRoom(roomOption - 1, startTime, endTime);
+                                    Console.Clear();
+                                    room.ShowRooms();
+                                    Console.WriteLine("\nYour room has been booked press Enter to go back");
+                                    Console.ReadKey();
+                                    break;
+                                case 2:
+                                    break;
+                            }
                             staff.LogOut(id, password);
-                            //DateTime bookning = new DateTime(30, 09, 2002, 3, 30, 01);
-                            //room.BookRoom(1,DateTime.Now, DateTime.Now);
-                            //room.ShowRooms();
-                            Console.ReadKey();
                         }
 
                         else
@@ -101,6 +179,7 @@ namespace Hydac
                     case 2:
                         Console.Clear();
                         Console.WriteLine("Type in your guestID and take a seat in the lobby");
+                        Console.Write("\nGuesID: ");
                         string guestId = Console.ReadLine();
                         admin.CheckGuestById(guestId);
                         break;
@@ -109,7 +188,8 @@ namespace Hydac
                         do
                         {
                             Console.Clear();
-                            Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Exit");
+                            Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Go back");
+                            Console.Write("\n\nSelectet: ");
                             int.TryParse(Console.ReadLine(), out adminOptions);
                             switch (adminOptions)
                             {
@@ -124,8 +204,8 @@ namespace Hydac
                                         Console.WriteLine($"Added {name} as a staffmember");
                                     else
                                         Console.WriteLine($"Failed to Add {name}");
-                                    Console.ReadKey(); 
-                                        break;
+                                    Console.ReadKey();
+                                    break;
                                 case 2:
                                     Console.Clear();
                                     Console.WriteLine("Type in the ID of the staff member you want to delete");

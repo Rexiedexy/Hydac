@@ -28,7 +28,7 @@ namespace Hydac
 
             if (userInput < 0 || userInput >= rooms.Length)
             {
-                //Console.WriteLine("Invalid room choice");
+                Console.WriteLine("Invalid room choice");
                 logger.Log("Invalid room choice");
                 return false;
             }
@@ -37,7 +37,7 @@ namespace Hydac
             {
                 rooms[userInput].start = start;
                 rooms[userInput].end = end;
-                //Console.WriteLine($"{rooms[userInput].name} is now booked from {start} to {end}");
+                Console.WriteLine($"{rooms[userInput].name} is now booked from {start} to {end}");
 
                 logger.Log($"{rooms[userInput].name} is now booked from {start} to {end}");
                 return true;
@@ -45,7 +45,7 @@ namespace Hydac
 
             else
             {
-                //Console.WriteLine($"{rooms[userInput].name} is not available at the requested time");
+                Console.WriteLine($"{rooms[userInput].name} is not available at the requested time");
                 logger.Log($"{rooms[userInput].name} is not available at the requested time");
                 return false;
             }
@@ -53,9 +53,9 @@ namespace Hydac
 
         public void ShowRooms()
         {
-            foreach (var room in rooms)
+            for (int i = 0; i < rooms.Length; i++) 
             {
-                Console.WriteLine($"Room: {room.name} - Room Size: {room.size} - Booked from: {room.start} - Booked to: {room.end}");
+                Console.WriteLine($"Room {i+1}: {rooms[i].name} - Room Size: {rooms[i].size} - Booked from: {rooms[i].start} - Booked to: {rooms[i].end}");
             }
         }
     }
