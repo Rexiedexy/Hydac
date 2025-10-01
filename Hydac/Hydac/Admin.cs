@@ -122,34 +122,32 @@ namespace Hydac
         }
 
 
-        public bool? RemoveStaff(string name, int ID, string Pass)
+        public bool? RemoveStaff(string name, int id, string pass)
         {
-            if (!TryGetStaffById(ID, out var member))
+            if (!TryGetStaffById(id, out var member) || member.Name != name)
             {
-                logger.Log($"ID {ID} is not a valid staff member.");
+                logger.Log($"Invalid staff: ID {id}, Name {name}.");
                 Console.WriteLine("Invalid staff member.");
                 return null;
             }
-            if (!member!.ValidatePassword(Pass))
+
+            if (!member.ValidatePassword(pass))
             {
                 logger.Log($"Wrong password for {member.Name} (ID {member.ID}).");
                 Console.WriteLine("Invalid Password");
                 return null;
             }
-            if (!TryGetStaffByName(name, out var member1))
+
+            if (!_staffMembers.TryRemove(member.ID, out _) ||
+                !_staffByName.TryRemove(member.Name, out _))
             {
-                logger.Log($"{name} is not a valid staff member.");
                 return false;
             }
-            if (_staffMembers.TryRemove(member.ID, out member) && _staffByName.TryRemove(member.Name, out member))
-            {
-                member = null;
-                logger.Log($"{name} Has Been Removed As A Staffmember");
-                return true;
-            }
 
-            return false;
+            logger.Log($"{name} has been removed as a staff member.");
+            return true;
         }
+
         private bool TryGetStaffByName(string name, out StaffMember? member) =>
             _staffByName.TryGetValue(name, out member);
 

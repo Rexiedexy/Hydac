@@ -41,8 +41,8 @@ namespace Hydac
     public class Staff
     {
         private readonly Logger _logger = new Logger();
-        private readonly ConcurrentDictionary<int, StaffMember> _staffMembers = new();
-        private readonly ConcurrentDictionary<string, StaffMember> _staffByName =
+        public static readonly ConcurrentDictionary<int, StaffMember> _staffMembers = new();
+        public static readonly ConcurrentDictionary<string, StaffMember> _staffByName =
             new(StringComparer.OrdinalIgnoreCase);
 
         public void StaffInit()
@@ -68,7 +68,6 @@ namespace Hydac
 
             _logger.Log("Staff has been initialized.");
         }
-
 
         public void ShowStaff()
         {
@@ -105,7 +104,6 @@ namespace Hydac
                 _logger.Log(staff.ToString());
             }
         }
-
         public StaffMember? LogIn(int id, string pass) => SetStaffStatus(id, pass, true);
 
         public StaffMember? LogOut(int id, string pass) => SetStaffStatus(id, pass, false);
@@ -117,7 +115,6 @@ namespace Hydac
                 _logger.Log($"{name} is not a valid staff member.");
                 return false;
             }
-
             if (!member!.IsLoggedIn)
             {
                 _logger.Log($"{name} must be logged in to change mood.");
@@ -125,7 +122,6 @@ namespace Hydac
                 return false;
             }
             member.SetMood(mood);
-
             _logger.Log($"{name}'s mood changed to {member.Mood}.");
             return true;
         }
