@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Hydac
         }
 
 
+
         //Admins
         public void AdminInit()
         {
@@ -42,16 +44,42 @@ namespace Hydac
             logger.Log("Admins has been initialized.");
         }
 
+        private AdminMembers? SetAdminStatus(string id, string pass, bool isLoggedIn)
+        {
+            if (!TryGetAdminById(id, out var member))
+            {
+                logger.Log($"ID {id} is not a valid admin member.");
+                Console.WriteLine("Invalid admin member.");
+                return null;
+            }
+
+            if (!member!.ValidatePassword(pass))
+            {
+                logger.Log($"Wrong password for {member.Name} (ID {member.ID}).");
+                Console.WriteLine("Invalid Password");
+                return null;
+            }
+            member.SetLoginStatus(isLoggedIn);
+
+            logger.Log($"{member.Name} is now {(isLoggedIn ? "logged in" : "logged out")}.");
+            return member;
+        }
+
+        public AdminMembers LogIn(string id, string pass) => SetAdminStatus(id, pass, true);
+        public AdminMembers LogOut(string id, string pass) => SetAdminStatus(id, pass, false);
+
         //GUEST MANAGEMENT
         public void AddGuest(string id, string name, string companyname)
         {
             if (!IsValidName(name))
             {
-                Console.WriteLine("Invalid name! Name cannot contain numbers or special characters.");
+                Console.WriteLine("Invalid name! Guest Name cannot contain numbers or special characters.");
+                logger.Log("Invalid name! Guest Name cannot contain numbers or special characters.");
                 return;
             }
 
             guests.Add(new Guest(id, name, companyname, logger));
+            logger.Log($"Guest {name} ({companyname}) added successfully.");
             Console.WriteLine($"Guest {name} ({companyname}) added successfully.");
         }
         private bool IsValidName(string name)
@@ -85,13 +113,27 @@ namespace Hydac
 
         }
 
-        /*public void ShowAllGuests()
+
+
+        public void ShowGuests()
         {
-            foreach (var g in guests)
+            if (guests.Count == 0)
             {
-                Console.WriteLine($"{g.Name} ({g.CompanyName}) [ID: {g.GuestId}] - {(g.IsCheckedIn ? "Checked In" : "Checked Out")}");
+                logger.Log("No Guests to display.");
+                Console.WriteLine("No Guests members available.");
+                return;
             }
-        }*/
+
+            logger.Log("Displaying all staff members...");
+
+            Console.WriteLine($"{"Name",-15} {"ID",-6} {"Status",-12} {"Company",-7}");
+            Console.WriteLine(new string('-', 45));
+            foreach (var guests in guests.OrderBy(g => g.GuestId).ToList())
+            {
+                Console.Write($"{guests.Name,-15} {guests.GuestId,-6} {(guests.IsCheckedIn ? "Checked in" : "Checked out"),-12} {guests.CompanyName,-7}");
+            }
+            Console.WriteLine(); 
+        }
         public bool RemoveGuest(string id)
         {
             var guest = guests.Find(g => g.GuestId == id);
@@ -149,9 +191,13 @@ namespace Hydac
             return true;
         }
 
-
         private bool TryGetStaffById(int id, out StaffMember? member) =>
-            Staff._staffMembers.TryGetValue(id, out member);
+                  Staff._staffMembers.TryGetValue(id, out member);
+
+        private bool TryGetAdminById(string id, out AdminMembers? member) =>
+           _adminMembers.TryGetValue(id, out member); 
+
+
     }
 }
 

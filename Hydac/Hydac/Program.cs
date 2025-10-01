@@ -165,6 +165,9 @@ namespace Hydac
                                 case 5:
                                     Console.Clear();
                                     logger.ShowLogs();
+                                   // staff.ShowStaff();
+                                    admin.ShowGuests();
+
                                     Console.WriteLine("Press Enter to continue...");
                                     Console.ReadKey();
                                     break;
