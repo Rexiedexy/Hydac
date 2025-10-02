@@ -221,6 +221,11 @@ namespace Hydac
                                         Console.Clear();
                                         Console.WriteLine("Type in the ID of the staff member you want to delete");
                                         int.TryParse(Console.ReadLine(), out int removeId);
+                                        Console.WriteLine("Type Name Of Staff Member : ");
+                                        string name32 = Console.ReadLine();
+                                        Console.WriteLine("Type Password Of Staffmember");
+                                        string passwwwwwww = Console.ReadLine();
+                                        admin.RemoveStaff(name32, removeId, passwwwwwww);
                                         break;
                                     case 3:
                                         Console.Clear();
