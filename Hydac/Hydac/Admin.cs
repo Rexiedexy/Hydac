@@ -44,11 +44,11 @@ namespace Hydac
             logger.Log("Admins has been initialized.");
         }
 
-        private AdminMembers? SetAdminStatus(string id, string pass, bool isLoggedIn)
+        private AdminMembers? SetAdminStatus(string adminId, string pass, bool isLoggedIn)
         {
-            if (!TryGetAdminById(id, out var member))
+            if (!TryGetAdminById(adminId, out var member))
             {
-                logger.Log($"ID {id} is not a valid admin member.");
+                logger.Log($"ID {adminId} is not a valid admin member.");
                 Console.WriteLine("Invalid admin member.");
                 return null;
             }
@@ -65,8 +65,8 @@ namespace Hydac
             return member;
         }
 
-        public AdminMembers LogIn(string id, string pass) => SetAdminStatus(id, pass, true);
-        public AdminMembers LogOut(string id, string pass) => SetAdminStatus(id, pass, false);
+        public AdminMembers LogIn(string adminId, string pass) => SetAdminStatus(adminId, pass, true);
+        public AdminMembers LogOut(string adminId, string pass) => SetAdminStatus(adminId, pass, false);
 
         //GUEST MANAGEMENT
         public void AddGuest(string id, string name, string companyname)

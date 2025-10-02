@@ -185,78 +185,112 @@ namespace Hydac
                         break;
 
                     case 3:
-                        do
+                        Console.Clear();
+                        Console.Write("Type your adminID: ");
+                        string adminId = Console.ReadLine();
+
+                        Console.Clear();
+                        Console.Write("Admin password: ");
+                        password = Console.ReadLine();
+
+                        var adminMember = admin.LogIn(adminId, password);
+                        if (adminMember != null)
+                        {
+                            do
+                            {
+                                Console.Clear();
+                                Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Show Staff \n 7. Show Guest \n 8. Exit");
+                                Console.Write("\n\nSelectet: ");
+                                int.TryParse(Console.ReadLine(), out adminOptions);
+                                switch (adminOptions)
+                                {
+                                    case 1:
+                                        Console.Clear();
+                                        Console.WriteLine("Type in the name of the staff member");
+                                        string name = Console.ReadLine();
+                                        Console.WriteLine("Type in the ID of the staff member");
+                                        int.TryParse(Console.ReadLine(), out id);
+                                        Console.WriteLine("Type in the Password of the staff member");
+                                        if (admin.AddStaff(name, id, Console.ReadLine()))
+                                            Console.WriteLine($"Added {name} as a staffmember");
+                                        else
+                                            Console.WriteLine($"Failed to Add {name}");
+                                        Console.ReadKey();
+                                        break;
+                                    case 2:
+                                        Console.Clear();
+                                        Console.WriteLine("Type in the ID of the staff member you want to delete");
+                                        int.TryParse(Console.ReadLine(), out int removeId);
+                                        break;
+                                    case 3:
+                                        Console.Clear();
+                                        Console.Write("Enter new Guest ID: ");
+                                        string newGuestId = Console.ReadLine();
+
+                                        Console.Write("Enter Guest Name: ");
+                                        string newName = Console.ReadLine();
+
+                                        Console.Write("Enter Company: ");
+                                        string newCompany = Console.ReadLine();
+
+                                        admin.AddGuest(newGuestId, newName, newCompany);
+                                        Console.WriteLine("Guest added successfully.");
+                                        Console.WriteLine("Press Enter to continue...");
+                                        Console.ReadKey();
+                                        break;
+                                    case 4:
+                                        Console.Clear();
+                                        Console.WriteLine("Type in the ID of the guest you want to delete");
+                                        string removeGuestId = Console.ReadLine();
+                                        if (admin.RemoveGuest(removeGuestId))
+                                        {
+                                            Console.WriteLine("Guest removed successfully.");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"Guest with ID {removeGuestId} not found.");
+                                        }
+                                        Console.WriteLine("Press Enter to continue...");
+                                        Console.ReadKey();
+                                        break;
+                                    case 5:
+                                        Console.Clear();
+                                        logger.ShowLogs();
+
+                                        Console.WriteLine("Press Enter to continue...");
+                                        Console.ReadKey();
+                                        break;
+                                    case 6:
+                                        Console.Clear();
+                                        staff.ShowStaff();
+                                  
+                                        Console.WriteLine("Press Enter to continue...");
+                                        Console.ReadKey();
+                                        break;
+                                    case 7:
+                                        Console.Clear();
+                                   
+                                        admin.ShowGuests();
+
+                                        Console.WriteLine("Press Enter to continue...");
+                                        Console.ReadKey();
+                                        break;
+                                    case 8:
+                                        Console.Clear();
+                                        Console.WriteLine("You have exited the admin menu");
+                                        System.Threading.Thread.Sleep(1000);
+                                        admin.LogOut(adminId, password);
+                                        break;
+                                }
+                            } while (adminOptions != 8);
+                        }
+                        else
                         {
                             Console.Clear();
-                            Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Go back");
-                            Console.Write("\n\nSelectet: ");
-                            int.TryParse(Console.ReadLine(), out adminOptions);
-                            switch (adminOptions)
-                            {
-                                case 1:
-                                    Console.Clear();
-                                    Console.WriteLine("Type in the name of the staff member");
-                                    string name = Console.ReadLine();
-                                    Console.WriteLine("Type in the ID of the staff member");
-                                    int.TryParse(Console.ReadLine(), out id);
-                                    Console.WriteLine("Type in the Password of the staff member");
-                                    if (admin.AddStaff(name, id, Console.ReadLine()))
-                                        Console.WriteLine($"Added {name} as a staffmember");
-                                    else
-                                        Console.WriteLine($"Failed to Add {name}");
-                                    Console.ReadKey();
-                                    break;
-                                case 2:
-                                    Console.Clear();
-                                    Console.WriteLine("Type in the ID of the staff member you want to delete");
-                                    int.TryParse(Console.ReadLine(), out int removeId);
-                                    break;
-                                case 3:
-                                    Console.Clear();
-                                    Console.Write("Enter new Guest ID: ");
-                                    string newGuestId = Console.ReadLine();
-
-                                    Console.Write("Enter Guest Name: ");
-                                    string newName = Console.ReadLine();
-
-                                    Console.Write("Enter Company: ");
-                                    string newCompany = Console.ReadLine();
-
-                                    admin.AddGuest(newGuestId, newName, newCompany);
-                                    Console.WriteLine("Guest added successfully.");
-                                    Console.WriteLine("Press Enter to continue...");
-                                    Console.ReadKey();
-                                    break;
-                                case 4:
-                                    Console.Clear();
-                                    Console.WriteLine("Type in the ID of the guest you want to delete");
-                                    string removeGuestId = Console.ReadLine();
-                                    if (admin.RemoveGuest(removeGuestId))
-                                    {
-                                        Console.WriteLine("Guest removed successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine($"Guest with ID {removeGuestId} not found.");
-                                    }
-                                    Console.WriteLine("Press Enter to continue...");
-                                    Console.ReadKey();
-                                    break;
-                                case 5:
-                                    Console.Clear();
-                                    logger.ShowLogs();
-                                   // staff.ShowStaff();
-                                    admin.ShowGuests();
-
-                                    Console.WriteLine("Press Enter to continue...");
-                                    Console.ReadKey();
-                                    break;
-                                case 6:
-                                    Console.Clear();
-                                    Console.WriteLine("You have exited the admin menu");
-                                    break;
-                            }
-                        } while (adminOptions != 6);
+                            Console.WriteLine("Admin password is incorrect.");
+                            Console.WriteLine("Press Enter to go back");
+                            Console.ReadKey();
+                        }
                         break;
 
                     case 4:
