@@ -21,16 +21,65 @@ namespace Hydac
             admin.AdminInit();
             staff.StaffInit();
             MeetingRoom room = new MeetingRoom();
-
+            string s = @"                                                                                                              
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                           -                                
+                                -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                 
+                            ----                                                                                                                                                                                                                                           ----                             
+                        -\--                                                                                                                                                                                                                                                   --/-                         
+                      \-    ---                                           --                                                 ---                                                                                                                                                   //                       
+                   -\-         ---------/                     \-----------   -----------/                       \------------   ----------------------------------------                         \-----------/                         -------------------------------------         -/                     
+                  \         |           |                     |           \-/                                                \-/                                        -/                                                           \-                                     -/         -/                   
+                \           |           |                     |           |                                                   |                                        -  -/                                   /                   \   -                                                                    
+                            |           |                     |           |                /                                  | |                                           |                  \                                                                                                            
+                            |           |                     |           |                  /             \                  | |          \/------------------             |                                                     |             -------------------             |           /               
+                            |           |                     |           |                                                   | |          /\                  /            |                                                     |            \                      ------- \ |                           
+                            |           |                     |           |      /             /                       \      | |         | |                   |           |               \                                     |           |                     /-  ---   --                            
+           \                |           |                     |           |                             \                     | |         | |                   |           |                                      /              |           |                       --    --                              
+                            |           |                     |           |                                                   | |         | |                   |           |                                                     |           |                         ----                   |            
+          |                 |           |                     |           |          /             /-\             \          | |         | |                   |           |                         \ /                         |           |                                                 /           
+                            |           |                     |           |                                                   | |         | |                   |           |                         | |                         |           |                                                 /           
+         |                  |            ---------------------\           |                                                   | |         | |                   |           |           \                                         |           |                                                  |          
+         |                  |                                             |              /                                    | |         | |                   |           |                       \                  /          |           |                                                  |          
+         |                  |                                             |                                   \               | |         | |                   |           |                              /                      |           |                                                  |          
+         |                  |                                             |                /                                  | |         | |                   |           |                                                     |           |                                                  |          
+         |                  |            ---------------------            |                  /             \                  | |         | |                   |           |                    \           /                    |           |                                                | |          
+                            |           |                     |           |                                \                  | |         | |                   |           |       \            \           /             /      |           |                                                 |           
+          |                 |           |                     |           |                   |           | |                 | |         | |                   |           |                     ------------             /      |           |                                                 \           
+                            |           |                     |           |                   |           |                   | |         | |                   |           |                                                     |           |                        -------                 |            
+           /                |           |                     |           |                   |           |                   | |         | |                   |           |    \                                                |           |                                                \            
+                            |           |                     |           |                   |           |                   | |         | |                   |           |                                                 /   |           |                     \-----------/                           
+            /               |           |                     |           |                   |           |                   | |          \/---------------                |                ---------------------                |                -------------              / |                           
+                            |           |                     |           |                   |           |                   | |          /\               ---             | \             \                                   / /             ---             ---             |                           
+              /             |           |                     |           |                   |           |                   | |            ---------------                                                       /                               -------------               \           \                
+                /           |           |                     |           |                   |           |                   | |                                          \                                                       /                                                                        
+                  /         \ /------ \ /                     | /------   /                   \  ------- \/                   |\/------                         -  -     \ \\     ------ |                              -----     /-  -    ----                      ---    -\          \                   
+                    -            --- ---                       -- ----- -                       ------- -/\                     \------------------------------- -- --\--  | --- ------ \\                           //-  -------- |   ----  -------------------------- ----          \-                    
+                      /     -----                                -     - -                     -       -                                                        -  -        -   -      -                                --        -        --                          -           -\-                      
+                       --/-                                       -----                          ------                          -------------------------------                 ------                                   ------             ---------------------              -\-                         
+                           ----        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------        ----                            
+                               --------                                                                                                                                                                                                                             --------                                
+                                       -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                        
+                                     -  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   -                                      
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                  
+"; 
+            
             do
             {
                 Console.Clear();
+                Console.WriteLine(s);
                 Console.WriteLine("Welcome! Pick whats relevant for you\n");
                 Console.WriteLine(" 1. Staff");
                 Console.WriteLine(" 2. Guest");
                 Console.WriteLine(" 3. Admin");
                 Console.WriteLine(" 4. Exit");
-                Console.Write("\n\nSelectet: ");
+                Console.Write("\n\nSelected: ");
                 int.TryParse(Console.ReadLine(), out options);
 
                 switch (options)
@@ -57,7 +106,7 @@ namespace Hydac
                                 Console.WriteLine($"Hello {user.Name}");
                                 Console.WriteLine("How is your mood?\n");
                                 Console.WriteLine(" 1. If you feel Green\n 2. If you feel Yellow\n 3. If you feel Red");
-                                Console.Write("\n\nSelectet: ");
+                                Console.Write("\n\nSelected: ");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out mood);
                             } while (programRunningNormally != true || mood >= 4 || mood < 1);
 
@@ -69,7 +118,7 @@ namespace Hydac
                                 Console.WriteLine($"You are now registered {user.Name}, have a good day :D\n");
                                 Console.WriteLine("1. Book room");
                                 Console.WriteLine("2. Go back");
-                                Console.Write("\n\nSelectet: ");
+                                Console.Write("\n\nSelected: ");
                                 programRunningNormally = int.TryParse(Console.ReadLine(), out staffOptions);
                                 Console.Clear();
 
@@ -200,7 +249,7 @@ namespace Hydac
                             {
                                 Console.Clear();
                                 Console.WriteLine(" 1. Add staff\n 2. Delete staff\n 3. Add guest\n 4. Delete guest\n 5. Show logs \n 6. Show Staff \n 7. Show Guest \n 8. Exit");
-                                Console.Write("\n\nSelectet: ");
+                                Console.Write("\n\nSelected: ");
                                 int.TryParse(Console.ReadLine(), out adminOptions);
                                 switch (adminOptions)
                                 {
