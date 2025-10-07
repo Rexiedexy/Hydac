@@ -19,7 +19,6 @@ namespace Hydac.Tests
             _admin = new Admin(logger);
             _admin.AdminInit();
 
-            // Assert - implicit (no exception means setup succeeded)
         }
 
         [TestMethod]
@@ -163,3 +162,4 @@ namespace Hydac.Tests
         }
     }
 }
+
